@@ -9,6 +9,12 @@ import { join } from 'path/posix';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
+import { VideoController } from './controllers/video.controller';
+import { VideoService } from './service/video.service';
+import { UserService } from './service/user.service';
+import { UserController } from './controllers/user.controller';
+import { User, UserSchema } from './model/user.schema';
+import { Video, VideoSchema } from './model/video.schema';
 
 @Module({
   imports: [
@@ -26,12 +32,14 @@ import { v4 as uuidv4 } from 'uuid';
       secret, 
       signOptions: { expiresIn: '2h'}
     }),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema}]),
+    MongooseModule.forFeature([{ name: Video.name, schema: VideoSchema}]),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, VideoController, UserController],
+  providers: [AppService, VideoService, UserService],
 })
 
 export class AppModule {}
