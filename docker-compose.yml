@@ -37,8 +37,17 @@ services:
       PG_DATA: /var/lib/postgresql/data 
     ports:
       - 5432:5432
-    volume:
+    volumes:
       - pgdata:/var/lib/postgresql/data
+  mongodb: 
+    image: mongo:latest
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: root 
+      MONGO_INITDB_ROOT_PASSWORD: lockonstratos
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
 networks:
   webnet:
 volumes:
